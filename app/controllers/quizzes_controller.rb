@@ -1,5 +1,5 @@
 class QuizzesController < ApplicationController
-  before_action :set_quiz, only: [:show, :submit]
+  before_action :set_quiz, only: [ :show, :submit ]
 
   def index
     @quizzes = Quiz.all
