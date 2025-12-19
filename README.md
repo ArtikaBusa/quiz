@@ -1,63 +1,162 @@
-Build a Quiz Management System with:
-    Admin Panel
-    Ability to create a quiz with:
-    Quiz title
-    A few questions of various types (MCQ, True/False, text, etc.)
+🧠 Quiz Management System
 
+A full-stack Quiz Management System built with Ruby on Rails 8, featuring an Admin Panel for quiz creation and a Public Interface for users to take quizzes and view results.
 
-    Public Page
-    A page where a quiz can be taken by anyone
-    Display results after completion (e.g., score or correct answers)
+🚀 Tech Stack
 
+Backend: Ruby on Rails 8
 
-i have to build first admin panel for quiz creation and then add public page for taking quize
+Frontend: HTML (ERB templates)
 
-Backend - Ruby on Rails 8
-Frontend - HTML 
-Database - PostgreSQL
-Admin Panel - Active Admin
-Css - Tailwind
+Database: PostgreSQL
 
-first add active admin and device to repo for login admin user 
+Admin Panel: ActiveAdmin
 
-Feature:
+Authentication: Devise
 
-Admin Panel:
-    Ability to create a quiz with Quiz title
+Styling: Tailwind CSS
 
-    create question for quize with multiple types: (MCQ, True/False, text, etc.)
+✨ Features
+🔐 Admin Panel (ActiveAdmin)
 
-    manage mcq options and mark correct answer
+Admins can manage quizzes and questions through a secure admin dashboard.
 
-Public Interface:
-    View list of availble quizess
-    Take a Quiz
-    Submit answer
-    Show score and correct answer
+Capabilities:
 
+Admin authentication (Devise)
 
-Database design:
+Create and manage quizzes
 
+Add questions to quizzes
+
+Support multiple question types:
+
+Multiple Choice (MCQ)
+
+True / False
+
+Text-based answers
+
+Manage MCQ options
+
+Mark correct answers for evaluation
+
+🌐 Public Interface
+
+Users can take quizzes without authentication.
+
+Capabilities:
+
+View list of available quizzes
+
+Take a quiz
+
+Submit answers
+
+View results on completion:
+
+Total score
+
+Correct and incorrect answers
+
+🗂 Database Design
 Quiz
-    title - string
+Column	Type
+title	string
+Question
+Column	Type
+quiz_id	reference
+content	text
+question_type	integer (enum)
+correct_boolean_answer	boolean
+correct_text_answer	text
+MCQ Option
+Column	Type
+question_id	reference
+text	string
+correct	boolean
+Submission
+Column	Type
+quiz_id	reference
+score	integer
+Submission Answer
+Column	Type
+submission_id	reference
+question_id	reference
+answer	text
+🧩 Question Types Supported
 
-Questions
-    quiz_id
-    content
-    question_type
-    correct_boolean_answer
-    correct_text_answer
+MCQ
 
-mcq_options - for store if there is four option then need to store in this table for mcq
-    question_id
-    text
-    correct - answer - true/false
+Stored via mcq_options
 
-Submissions
-    quiz_id
-    score
+One option marked as correct
 
-submission_answers
-    submission_id
-    question_id
-    answer
+True / False
+
+Uses correct_boolean_answer
+
+Text Answer
+
+Uses correct_text_answer
+
+🔄 Application Flow
+Admin Flow
+
+Admin logs in via ActiveAdmin
+
+Creates a quiz
+
+Adds questions with different types
+
+Sets correct answers
+
+User Flow
+
+User visits quiz listing page
+
+Selects a quiz
+
+Answers questions
+
+Submits quiz
+
+Sees score and correct answers on the same page
+
+🛠 Setup Instructions
+# Clone repository
+git clone <repo-url>
+cd quiz-management-system
+
+# Install dependencies
+bundle install
+
+# Setup database
+rails db:create
+rails db:migrate
+rails db:seed
+
+# Start server
+rails server
+
+🔑 Admin Login
+
+After seeding:
+
+URL: /admin
+
+Email: admin@example.com
+
+Password: password123
+
+📌 Future Enhancements (Optional)
+
+User authentication for quiz attempts
+
+Timer-based quizzes
+
+Quiz categories & difficulty levels
+
+Result analytics in admin panel
+
+Export quiz results
