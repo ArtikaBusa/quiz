@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  quiz: one
+  content: MyText
+  question_type: 1
+  correct_boolean_answer: false
+  correct_text_answer: MyText
+
+two:
+  quiz: two
+  content: MyText
+  question_type: 1
+  correct_boolean_answer: false
+  correct_text_answer: MyText

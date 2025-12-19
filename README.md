@@ -1,24 +1,63 @@
-# README
+Build a Quiz Management System with:
+    Admin Panel
+    Ability to create a quiz with:
+    Quiz title
+    A few questions of various types (MCQ, True/False, text, etc.)
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+    Public Page
+    A page where a quiz can be taken by anyone
+    Display results after completion (e.g., score or correct answers)
 
-* Ruby version
 
-* System dependencies
+i have to build first admin panel for quiz creation and then add public page for taking quize
 
-* Configuration
+Backend - Ruby on Rails 8
+Frontend - HTML 
+Database - PostgreSQL
+Admin Panel - Active Admin
+Css - Tailwind
 
-* Database creation
+first add active admin and device to repo for login admin user 
 
-* Database initialization
+Feature:
 
-* How to run the test suite
+Admin Panel:
+    Ability to create a quiz with Quiz title
 
-* Services (job queues, cache servers, search engines, etc.)
+    create question for quize with multiple types: (MCQ, True/False, text, etc.)
 
-* Deployment instructions
+    manage mcq options and mark correct answer
 
-* ...
+Public Interface:
+    View list of availble quizess
+    Take a Quiz
+    Submit answer
+    Show score and correct answer
+
+
+Database design:
+
+Quiz
+    title - string
+
+Questions
+    quiz_id
+    content
+    question_type
+    correct_boolean_answer
+    correct_text_answer
+
+mcq_options - for store if there is four option then need to store in this table for mcq
+    question_id
+    text
+    correct - answer - true/false
+
+Submissions
+    quiz_id
+    score
+
+submission_answers
+    submission_id
+    question_id
+    answer
