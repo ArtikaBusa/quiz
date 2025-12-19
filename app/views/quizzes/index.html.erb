@@ -1,4 +1,44 @@
-<div>
-  <h1 class="font-bold text-4xl">Quizzes#index</h1>
-  <p>Find me in app/views/quizzes/index.html.erb</p>
+<div class="min-h-screen bg-gray-100 flex items-center justify-center">
+  <div class="max-w-6xl w-full px-6 py-12">
+
+    <!-- Page Title -->
+    <h1 class="text-4xl font-bold text-center text-gray-800 mb-12">
+      Available Quizzes
+    </h1>
+
+    <!-- Quiz Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <% @quizzes.each do |quiz| %>
+
+        <!-- Quiz Card -->
+        <div
+          class="bg-white rounded-2xl shadow-md hover:shadow-xl transition
+                 p-6 flex flex-col items-center text-center">
+
+          <!-- Quiz Title -->
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">
+            <%= quiz.title %>
+          </h2>
+
+          <!-- Optional subtitle -->
+          <p class="text-sm text-gray-500 mb-6">
+            <%= quiz.questions.count %> Questions
+          </p>
+
+          <!-- Start Quiz Button -->
+          <%= link_to quiz_path(quiz),
+              class: "mt-auto inline-flex items-center justify-center
+                      w-full px-6 py-3 rounded-xl
+                      bg-blue-600 text-white font-semibold
+                      hover:bg-blue-700
+                      focus:outline-none focus:ring-2 focus:ring-blue-400
+                      transition" do %>
+            Start Quiz →
+          <% end %>
+
+        </div>
+
+      <% end %>
+    </div>
+  </div>
 </div>

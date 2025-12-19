@@ -1,4 +1,165 @@
-<div>
-  <h1 class="font-bold text-4xl">Quizzes#show</h1>
-  <p>Find me in app/views/quizzes/show.html.erb</p>
+<div class="min-h-screen bg-gray-100 py-10">
+  <div class="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow">
+    <div style="margin-bottom:20px;">
+  <%= link_to "← Back to Quizzes",
+              quizzes_path,
+              style: "text-decoration:none;font-weight:bold;" %>
+</div>
+
+    <!-- Title -->
+    <h1 class="text-3xl font-bold text-center mb-4">
+      <%= @quiz.title %>
+    </h1>
+
+    <!-- Score -->
+    <% if @submission %>
+      <div class="text-center mb-8">
+        <span class="inline-block bg-blue-100 text-blue-700 px-6 py-2 rounded-full text-lg font-semibold">
+          Score: <%= @submission.score %> / <%= @quiz.questions.count %>
+        </span>
+      </div>
+    <% end %>
+
+    <%= form_with url: submit_quiz_path(@quiz), method: :post, local: true do %>
+
+      <% @quiz.questions.each_with_index do |question, index| %>
+
+        <% user_answer =
+          @submission&.submission_answers&.find { |a| a.question_id == question.id }&.answer
+        %>
+
+        <% correct_answer =
+          case question.question_type
+          when "mcq"
+            question.mcq_options.find_by(correct: true)&.text
+          when "boolean"
+            question.correct_boolean_answer.to_s
+          when "text"
+            question.correct_text_answer
+          end
+        %>
+
+        <div class="mb-8 border rounded-xl p-6 bg-gray-50">
+
+          <!-- Question -->
+          <p class="font-semibold text-lg mb-4">
+            <%= index + 1 %>. <%= question.content %>
+          </p>
+
+          <!-- MCQ -->
+          <% if question.mcq? %>
+            <% question.mcq_options.each do |option| %>
+
+              <% is_selected = user_answer == option.text %>
+              <% is_correct  = option.correct %>
+
+              <% bg =
+                if @submission
+                  is_correct ? "bg-green-100 border-green-400" :
+                  is_selected ? "bg-red-100 border-red-400" :
+                  "bg-white border-gray-300"
+                else
+                  "bg-white border-gray-300"
+                end
+              %>
+
+              <label class="flex items-center gap-3 p-3 mb-3 border rounded-lg <%= bg %>">
+                <%= radio_button_tag "answers[#{question.id}]",
+                                    option.text,
+                                    is_selected,
+                                    disabled: @submission.present? %>
+
+                <span class="flex-1"><%= option.text %></span>
+
+                <% if @submission %>
+                  <% if is_correct %>
+                    <span class="text-green-700 font-semibold">✔</span>
+                  <% elsif is_selected %>
+                    <span class="text-red-700 font-semibold">✖</span>
+                  <% end %>
+                <% end %>
+              </label>
+
+            <% end %>
+
+          <!-- BOOLEAN -->
+          <% elsif question.boolean? %>
+            <% ["true", "false"].each do |value| %>
+
+              <% is_selected = user_answer == value %>
+              <% is_correct = correct_answer == value %>
+
+              <% bg =
+                if @submission
+                  is_correct ? "bg-green-100 border-green-400" :
+                  is_selected ? "bg-red-100 border-red-400" :
+                  "bg-white border-gray-300"
+                else
+                  "bg-white border-gray-300"
+                end
+              %>
+
+              <label class="flex items-center gap-3 p-3 mb-3 border rounded-lg <%= bg %>">
+                <%= radio_button_tag "answers[#{question.id}]",
+                                    value,
+                                    is_selected,
+                                    disabled: @submission.present? %>
+
+                <span class="flex-1 capitalize"><%= value %></span>
+
+                <% if @submission %>
+                  <% if is_correct %>
+                    <span class="text-green-700 font-semibold">✔</span>
+                  <% elsif is_selected %>
+                    <span class="text-red-700 font-semibold">✖</span>
+                  <% end %>
+                <% end %>
+              </label>
+
+            <% end %>
+
+          <!-- TEXT -->
+          <!-- TEXT QUESTION -->
+          <% elsif question.text? %>
+
+            <% if @submission.nil? %>
+              <!-- BEFORE SUBMIT -->
+              <%= text_field_tag "answers[#{question.id}]",
+                                nil,
+                                placeholder: "Type your answer",
+                                class: "w-full border rounded-lg px-4 py-2 focus:ring focus:ring-blue-200" %>
+
+            <% else %>
+              <!-- AFTER SUBMIT -->
+              <input type="text"
+                    value="<%= user_answer %>"
+                    readonly
+                    class="w-full border rounded-lg px-4 py-2
+                            <%= user_answer.to_s.strip.downcase == correct_answer.to_s.strip.downcase ?
+                                'bg-green-100 border-green-400' :
+                                'bg-red-100 border-red-400' %>" />
+
+              <% if user_answer.to_s.strip.downcase != correct_answer.to_s.strip.downcase %>
+                <p class="mt-2 text-sm text-green-700">
+                  Correct Answer:
+                  <strong><%= correct_answer %></strong>
+                </p>
+              <% end %>
+            <% end %>
+
+          <% end %>
+
+
+        </div>
+      <% end %>
+
+      <% unless @submission %>
+        <div class="text-center">
+          <%= submit_tag "Submit Quiz",
+                         class: "bg-blue-600 text-white px-10 py-3 rounded-xl text-lg font-semibold hover:bg-blue-700" %>
+        </div>
+      <% end %>
+
+    <% end %>
+  </div>
 </div>
